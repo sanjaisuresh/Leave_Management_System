@@ -28,3 +28,10 @@ Welcome to the Leave Management System, where managing leave applications has ne
 ## Login Page:
 ![image](https://github.com/sanjaisuresh/Leave_Management_System/assets/138108982/efc0bf4c-cca1-45bf-8535-bb44aea4dbe9)
 
+## Student_dashboard:
+![image](https://github.com/sanjaisuresh/Leave_Management_System/assets/138108982/f4083447-05e2-4061-8b62-f81c73c5e1c4)
+
+## Admin_dashboard:
+![image](https://github.com/sanjaisuresh/Leave_Management_System/assets/138108982/c8b88c04-553e-47bc-a0b9-88764820030c)
+
+
