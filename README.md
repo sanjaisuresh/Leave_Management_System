@@ -22,4 +22,4 @@ Welcome to the Leave Management System, where managing leave applications has ne
 ## Installation
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/leave-management-system.git
+   git clone https://github.com/sanjaisuresh/Leave_Management_System.git
