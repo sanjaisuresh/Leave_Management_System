@@ -23,3 +23,8 @@ Welcome to the Leave Management System, where managing leave applications has ne
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/sanjaisuresh/Leave_Management_System.git
+
+## Output
+## Login Page:
+![image](https://github.com/sanjaisuresh/Leave_Management_System/assets/138108982/efc0bf4c-cca1-45bf-8535-bb44aea4dbe9)
+
