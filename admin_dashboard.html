@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Your CSS styles for admin_dashboard.html */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #6f7984;
+            color: #fff;
+            padding: 10px;
+            position: relative;
+        }
+
+        .profile-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            color: #6f7984;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+
+        .recent-button {
+            position: absolute;
+            top: 10px; /* Adjust the top position */
+            right: 100px; /* Position it to the left */
+            width: 60px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #6f7984;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 100px;
+            right: 10px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 300px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .leave-applications {
+            margin-top: 20px;
+        }
+
+        .leave-application {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .leave-application h4 {
+            color: #6f7984;
+        }
+
+        .leave-application p {
+            margin-top: 10px;
+        }
+
+        .leave-application .approve-button,
+        .leave-application .reject-button {
+            background-color: #6f7984;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .leave-application .approve-button:hover,
+        .leave-application .reject-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to the Admin Dashboard</h1>
+        <!-- Circular profile button -->
+        <div class="profile-button" id="profileButton">Profile</div>
+        <!-- Recent button -->
+        <div class="recent-button" id="recentButton">Recent</div>
+    </div>
+
+    <!-- Popup box for admin details -->
+    <div class="popup" id="popupDetails">
+        <div class="popup-content">
+            <span class="close" id="closePopup">&times;</span>
+            <h3>Your Details</h3>
+            <div id="adminDetails">
+                <!-- Admin's details will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leave applications section -->
+    <div class="leave-applications">
+        <h2>Leave Applications for Review</h2>
+        <!-- Leave applications will be displayed here using JavaScript -->
+        <div id="leaveApplicationsContainer"></div>
+    </div>
+
+    <!-- JavaScript to toggle profile details display, process leave applications, and navigate to recent.html -->
+    <script>
+        const profileButton = document.getElementById('profileButton');
+        const recentButton = document.getElementById('recentButton');
+        const popupDetails = document.getElementById('popupDetails');
+        const closePopup = document.getElementById('closePopup');
+        const adminDetails = document.getElementById('adminDetails');
+        const leaveApplicationsContainer = document.getElementById('leaveApplicationsContainer');
+
+        profileButton.addEventListener('click', () => {
+            fetchAdminDetails();
+            popupDetails.style.display = 'block';
+        });
+
+        closePopup.addEventListener('click', () => {
+            popupDetails.style.display = 'none';
+        });
+
+        recentButton.addEventListener('click', () => {
+            // Navigate to the recent.html page
+            window.location.href = 'recent.html';
+        });
+
+        function fetchAdminDetails() {
+            // Make an asynchronous request to fetch admin details from the server
+            fetch('fetch_admin_details.php')
+                .then(response => response.text())
+                .then(data => {
+                    adminDetails.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching admin details:', error);
+                });
+        }
+
+        // Function to fetch and display leave application details using AJAX
+        function fetchLeaveApplications() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    leaveApplicationsContainer.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "leave_applications.php", true);
+            xhr.send();
+        }
+
+        // Call the function to fetch and display leave application details
+        fetchLeaveApplications();
+
+        // Process leave application (approve or reject)
+        leaveApplicationsContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('approve-button')) {
+                const applicationId = event.target.getAttribute('data-application-id');
+                processLeaveApplication(applicationId, 'Approved');
+            } else if (event.target.classList.contains('reject-button')) {
+                const applicationId = event.target.getAttribute('data-application-id');
+                processLeaveApplication(applicationId, 'Rejected');
+            }
+        });
+
+        function processLeaveApplication(applicationId, status) {
+            // Make an asynchronous request to update the leave application status
+            fetch('process_leave_application.php', {
+                method: 'POST',
+                body: JSON.stringify({ id: applicationId, status }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.text())
+                .then(data => {
+                    // Refresh the leave applications list after processing
+                    fetchLeaveApplications();
+                })
+                .catch(error => {
+                    console.error('Error processing leave application:', error);
+                });
+        }
+    </script>
+</body>
+</html>

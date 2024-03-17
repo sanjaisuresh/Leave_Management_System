@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Application Progress</title>
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #6f7984;
+            color: #fff;
+            padding: 10px;
+        }
+        .progress-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        .progress-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .progress-item h3 {
+            color: #6f7984;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Leave Application Progress</h1>
+    </div>
+
+    <div class="progress-container" id="progressContainer">
+        <!-- Leave application details will be displayed here using JavaScript -->
+    </div>
+
+    <script>
+        // Function to fetch and display leave application details using AJAX
+        function fetchLeaveDetails() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById("progressContainer").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "progress.php", true);
+            xhr.send();
+        }
+
+        // Call the function to fetch and display leave application details
+        fetchLeaveDetails();
+    </script>
+</body>
+</html>

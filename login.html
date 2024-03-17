@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #6f7984;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6f7984;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <div id="studentLogin" style="display: block;">
+            <h3>Student Login</h3>
+            <form action="student_login.php" method="POST">
+                <label for="student_rollno">Roll Number:</label>
+                <input type="text" id="student_rollno" name="student_rollno" placeholder="Your Roll Number" required>
+                <label for="student_email">Email:</label>
+                <input type="text" id="student_email" name="student_email" placeholder="e.g., john@example.com" required>
+                <label for="student_password">Password:</label>
+                <input type="password" id="student_password" name="student_password" required>
+                <button type="submit">Student Login</button>
+            </form>
+            <p><a href="#" onclick="toggleLogin('adminLogin')">Admin Login</a></p>
+        </div>
+
+        <div id="adminLogin" style="display: none;">
+            <h3>Admin Login</h3>
+            <form action="admin_login.php" method="POST">
+                <label for="admin_email">Email:</label>
+                <input type="text" id="admin_email" name="admin_email" placeholder="Admin Email" required>
+                <label for="admin_password">Password:</label>
+                <input type="password" id="admin_password" name="admin_password" required>
+                <button type="submit">Admin Login</button>
+            </form>
+            <p><a href="#" onclick="toggleLogin('studentLogin')">Student Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        function toggleLogin(loginType) {
+            if (loginType === 'studentLogin') {
+                document.getElementById('studentLogin').style.display = 'block';
+                document.getElementById('adminLogin').style.display = 'none';
+            } else if (loginType === 'adminLogin') {
+                document.getElementById('studentLogin').style.display = 'none';
+                document.getElementById('adminLogin').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

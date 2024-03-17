@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #6f7984;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .profile-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            color: #6f7984;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            margin-left: auto;
+            margin-right: 10px;
+        }
+        .progress-button {
+            position: absolute;
+            top: 10px; /* Adjust the top position */
+            right: 100px; /* Position it to the left */
+            width: 60px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #6f7984;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+        .popup-content {
+            position: absolute;
+            top: 100px;
+            right: 10px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 300px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .options-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            overflow-y: scroll;
+        }
+        .leave-option {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none; /* Initially hide both forms */
+        }
+        .leave-option.active {
+            display: block; /* Display the active form */
+        }
+        .leave-option h3 {
+            color: #6f7984;
+        }
+        .leave-option label {
+            display: block;
+            margin-top: 10px;
+        }
+        .leave-option textarea,
+        .leave-option input[type="date"],
+        .leave-option input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .leave-option button {
+            background-color: #6f7984;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .leave-option button:hover {
+            background-color: #6f7984;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #ccc;
+            height: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Progress button (moved to the left) -->
+        <a class="progress-button" href="progress.html" id="progressButton">Progress</a>
+        <h1>Welcome to the Student Dashboard</h1>
+        <!-- Circular profile button -->
+        <div class="profile-button" id="profileButton">Profile</div>
+    </div>
+
+    <!-- Popup box for student details -->
+    <div class="popup" id="popupDetails">
+        <div class="popup-content">
+            <span class="close" id="closePopup">&times;</span>
+            <h3>Your Details</h3>
+            <div id="studentDetails">
+                <!-- Student's details will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leave options section -->
+    <div class="options-section">
+        <h2>Leave Application</h2>
+        
+        <!-- Switch button to toggle between forms -->
+        <button id="switchButton">Switch to Casual Leave</button>
+
+        <!-- Medical Leave form -->
+        <div class="leave-option active" id="medicalLeaveForm">
+            <h3>Medical Leave</h3>
+            <form action="apply_leave.php" method="POST">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" value="Medical" readonly>
+                <label for="reason">Reason for Medical Leave:</label>
+                <textarea id="reason" name="reason" rows="4" cols="50" required></textarea>
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" required>
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" required>
+                <!-- Email input field -->
+                <label for="student_email">Your Email:</label>
+                <input type="email" id="student_email" name="student_email" required>
+                <button type="submit">Apply Medical Leave</button>
+            </form>
+        </div>
+        
+        <!-- Casual Leave form -->
+        <div class="leave-option" id="casualLeaveForm">
+            <h3>Casual Leave</h3>
+            <form action="apply_leave.php" method="POST">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" value="Casual" readonly>
+                <label for="reason">Reason for Casual Leave:</label>
+                <textarea id="reason" name="reason" rows="4" cols="50" required></textarea>
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" required>
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" required>
+                <!-- Email input field -->
+                <label for="student_email">Your Email:</label>
+                <input type="email" id="student_email" name="student_email" required>
+                <button type="submit">Apply Casual Leave</button>
+            </form>
+        </div>
+
+        <!-- Progress bar container -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript to toggle profile details display and switch forms -->
+    <script>
+        const profileButton = document.getElementById('profileButton');
+        const popupDetails = document.getElementById('popupDetails');
+        const closePopup = document.getElementById('closePopup');
+        const studentDetails = document.getElementById('studentDetails');
+        const medicalLeaveForm = document.getElementById('medicalLeaveForm');
+        const casualLeaveForm = document.getElementById('casualLeaveForm');
+        const switchButton = document.getElementById('switchButton');
+        const progressButton = document.getElementById('progressButton'); 
+        const progressBar = document.getElementById('progressBar');
+
+        closePopup.addEventListener('click', () => {
+            popupDetails.style.display = 'none';
+        });
+
+        switchButton.addEventListener('click', () => {
+            if (medicalLeaveForm.classList.contains('active')) {
+                // Switch to Casual Leave form
+                medicalLeaveForm.classList.remove('active');
+                casualLeaveForm.classList.add('active');
+                switchButton.textContent = 'Switch to Medical Leave';
+            } else {
+                // Switch to Medical Leave form
+                casualLeaveForm.classList.remove('active');
+                medicalLeaveForm.classList.add('active');
+                switchButton.textContent = 'Switch to Casual Leave';
+            }
+        });
+
+        profileButton.addEventListener('click', () => {
+            fetchStudentDetails();
+            popupDetails.style.display = 'block';
+        });
+
+        progressButton.addEventListener('click', () => {
+            // Redirect to progress.html when the Progress button is clicked
+            window.location.href = 'progress.php';
+        });
+
+        // Function to fetch student details
+        function fetchStudentDetails() {
+            // Make an asynchronous request to fetch student details from the server
+            fetch('fetch_student_details.php')
+                .then(response => response.text())
+                .then(data => {
+                    studentDetails.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching student details:', error);
+                });
+        }
+
+        // Example: Update the progress bar with a percentage (replace with your data)
+        function updateProgressBar(percentage) {
+            progressBar.style.width = percentage + '%';
+            if (percentage < 80) {
+                progressBar.style.backgroundColor = 'red';
+            } else {
+                progressBar.style.backgroundColor = 'green';
+            }
+        }
+
+        updateProgressBar(75); // Example percentage
+    </script>
+</body>
+</html>

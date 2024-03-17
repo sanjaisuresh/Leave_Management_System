@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recent Leave Applications</title>
+    <style>
+        /* Your CSS styles for recent.html */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #6f7984;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .back-button {
+            background-color: #fff;
+            color: #6f7984;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .leave-applications {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .leave-application h2 {
+            color: #6f7984;
+        }
+
+        .leave-application p {
+            margin-top: 10px;
+        }
+
+        .approved,
+        .rejected {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .approved h3,
+        .rejected h3 {
+            color: #6f7984;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Recent Leave Applications</h1>
+        <!-- Back button to return to the admin dashboard -->
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Approved Leave Applications -->
+    <div class="approved">
+        <h2>Approved Applications</h2>
+        <!-- Approved applications will be displayed here using JavaScript -->
+        <div id="approvedApplicationsContainer"></div>
+    </div>
+
+    <!-- Rejected Leave Applications -->
+    <div class="rejected">
+        <h2>Rejected Applications</h2>
+        <!-- Rejected applications will be displayed here using JavaScript -->
+        <div id="rejectedApplicationsContainer"></div>
+    </div>
+
+    <script>
+        // Function to navigate back to the admin dashboard
+        function goBack() {
+            window.location.href = 'admin_dashboard.html';
+        }
+
+        // Function to fetch and display approved leave applications using AJAX
+        function fetchApprovedApplications() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById("approvedApplicationsContainer").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "fetch_approved_applications.php", true);
+            xhr.send();
+        }
+
+        // Function to fetch and display rejected leave applications using AJAX
+        function fetchRejectedApplications() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById("rejectedApplicationsContainer").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "fetch_rejected_applications.php", true);
+            xhr.send();
+        }
+
+        // Call the functions to fetch and display approved and rejected applications
+        fetchApprovedApplications();
+        fetchRejectedApplications();
+    </script>
+</body>
+</html>
